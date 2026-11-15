@@ -1,0 +1,27 @@
+﻿# Environnement Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Tests et couverture
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Ruff
+.ruff_cache/
+
+# Données volumineuses
+data/*.csv
+
+# Modèles générés
+models/*.joblib
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
