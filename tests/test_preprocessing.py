@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from app.preprocessing import validate_data
+from app.preprocessing import preprocess_data, validate_data
 
 
 @pytest.fixture
@@ -98,3 +98,43 @@ def test_T08_cible_negative(donnees_valides):
 
     with pytest.raises(ValueError):
         validate_data(donnees)
+
+
+def test_T03_pretraitement_valide(donnees_valides):
+    """Le prétraitement doit produire X et y conformes."""
+    X, y = preprocess_data(donnees_valides)
+
+    assert X.shape == (3, 30)
+    assert y.shape == (3,)
+    assert "Class" not in X.columns
+    assert np.isfinite(X.to_numpy(dtype=float)).all()
+
+
+def test_T03_pretraitement_rejette_nan(donnees_valides):
+    """Le prétraitement doit rejeter les valeurs NaN."""
+    donnees = donnees_valides.copy()
+    donnees.loc[0, "V1"] = np.nan
+
+    with pytest.raises(ValueError):
+        preprocess_data(donnees)
+
+
+def test_T03_pretraitement_rejette_inf(donnees_valides):
+    """Le prétraitement doit rejeter les valeurs infinies."""
+    donnees = donnees_valides.copy()
+    donnees.loc[0, "Amount"] = np.inf
+
+    with pytest.raises(ValueError):
+        preprocess_data(donnees)
+
+
+def test_T03_pretraitement_conserve_cible(donnees_valides):
+    """Les étiquettes doivent rester inchangées."""
+    X, y = preprocess_data(donnees_valides)
+
+    assert y.tolist() == donnees_valides["Class"].tolist()
+    assert X.columns.tolist() == [
+        "Time",
+        *[f"V{i}" for i in range(1, 29)],
+        "Amount",
+    ]

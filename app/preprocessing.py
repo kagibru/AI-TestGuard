@@ -73,3 +73,44 @@ def validate_data(df: pd.DataFrame) -> bool:
         )
 
     return True
+
+
+
+
+def preprocess_data(df: pd.DataFrame):
+    """
+    Prépare les données pour l'apprentissage supervisé.
+
+    La fonction :
+    - valide les données ;
+    - sépare les variables X de la cible y ;
+    - conserve un ordre fixe des variables ;
+    - vérifie que les variables produites sont finies.
+
+    Aucune transformation statistique n'est ajustée ici.
+
+    Returns:
+        X : DataFrame des variables explicatives.
+        y : Series contenant la variable cible.
+    """
+
+    # Étape 1 : valider les données d'entrée.
+    validate_data(df)
+
+    # Étape 2 : définir explicitement les variables.
+    feature_columns = [
+        col for col in REQUIRED_COLUMNS
+        if col != "Class"
+    ]
+
+    # Étape 3 : séparer les variables et la cible.
+    X = df[feature_columns].copy()
+    y = df["Class"].copy()
+
+    # Étape 4 : vérifier les valeurs produites.
+    if not np.isfinite(X.to_numpy(dtype=float)).all():
+        raise ValueError(
+            "Le prétraitement produit des valeurs non finies."
+        )
+
+    return X, y
