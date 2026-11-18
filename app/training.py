@@ -3,6 +3,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 
 
 def split_data(X, y, random_state=42):
@@ -58,6 +59,25 @@ def train_model(X, y):
                 ),
             ),
         ]
+    )
+
+    model.fit(X, y)
+
+    return model
+
+
+def train_decision_tree(X, y):
+    """
+    Entraîne un arbre de décision pour la détection de fraude.
+
+    Le modèle est ajusté exclusivement sur les données
+    d'entraînement fournies.
+    """
+    model = DecisionTreeClassifier(
+        max_depth=8,
+        min_samples_leaf=10,
+        class_weight="balanced",
+        random_state=42,
     )
 
     model.fit(X, y)

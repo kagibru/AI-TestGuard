@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from app.training import split_data, train_model
+from app.training import split_data, train_decision_tree, train_model
 
 
 @pytest.fixture
@@ -124,5 +124,43 @@ def test_T06_partitionnement_reproductible():
             pd.testing.assert_frame_equal(partie_1, partie_2)
         else:
             pd.testing.assert_series_equal(partie_1, partie_2)
+
+
+
+def test_entrainement_arbre_decision():
+    """
+    Vérifie que l'arbre de décision :
+    - s'entraîne correctement ;
+    - produit une prédiction par transaction ;
+    - produit deux probabilités par transaction ;
+    - respecte les bornes [0, 1].
+    """
+
+    # Jeu de données synthétique.
+    X = pd.DataFrame({
+        "V1": [-2.0, -1.0, 1.0, 2.0],
+        "Amount": [10.0, 20.0, 100.0, 200.0],
+    })
+
+    y = pd.Series([0, 0, 1, 1])
+
+    # Entraîner l'arbre.
+    model = train_decision_tree(X, y)
+
+    # Produire les prédictions.
+    predictions = model.predict(X)
+    probabilities = model.predict_proba(X)
+
+    # Vérifier le nombre de résultats.
+    assert len(predictions) == 4
+
+    # 4 transactions, 2 classes.
+    assert probabilities.shape == (4, 2)
+
+    # Vérifier les classes.
+    assert model.classes_.tolist() == [0, 1]
+
+    # Vérifier les bornes des probabilités.
+    assert ((probabilities >= 0) & (probabilities <= 1)).all()
 
 
