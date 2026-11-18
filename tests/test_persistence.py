@@ -1,6 +1,10 @@
+import joblib
 import numpy as np
 import pandas as pd
 import pytest
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 from app.persistence import load_model, save_model
 from app.training import train_model
@@ -117,3 +121,46 @@ def test_T09_refus_objet_non_pipeline(tmp_path):
 
     with pytest.raises(TypeError):
         save_model({"model": "invalide"}, filepath)
+
+def test_T09_refus_sauvegarde_pipeline_non_entraine(tmp_path):
+    """Un pipeline non entraîné ne doit pas être sauvegardé."""
+
+    model = Pipeline([
+        ("scaler", StandardScaler()),
+        ("classifier", LogisticRegression()),
+    ])
+
+    filepath = tmp_path / "non_entraine.joblib"
+
+    with pytest.raises(ValueError):
+        save_model(model, filepath)
+
+    assert not filepath.exists()
+
+
+def test_T09_refus_chargement_objet_non_pipeline(tmp_path):
+    """Le chargement doit rejeter un objet non conforme."""
+
+    filepath = tmp_path / "objet_invalide.joblib"
+
+    joblib.dump({"type": "invalide"}, filepath)
+
+    with pytest.raises(TypeError):
+        load_model(filepath)
+
+
+def test_T09_refus_chargement_pipeline_non_entraine(tmp_path):
+    """Le chargement doit rejeter un pipeline non entraîné."""
+
+    model = Pipeline([
+        ("scaler", StandardScaler()),
+        ("classifier", LogisticRegression()),
+    ])
+
+    filepath = tmp_path / "pipeline_non_entraine.joblib"
+
+    joblib.dump(model, filepath)
+
+    with pytest.raises(ValueError):
+        load_model(filepath)
+
