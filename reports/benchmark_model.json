@@ -2,9 +2,9 @@
     "batch_size": 100,
     "iterations": 100,
     "warmup": 10,
-    "mean_batch_latency_ms": 0.5856230002245866,
-    "p95_batch_latency_ms": 0.6911050179041922,
-    "throughput_transactions_per_second": 170758.32056058245,
+    "mean_batch_latency_ms": 0.5673960002604872,
+    "p95_batch_latency_ms": 0.6138650074717588,
+    "throughput_transactions_per_second": 176243.7520780738,
     "model_size_mb": 0.0025949478149414062,
     "memory_delta_mb": 0.0,
     "evaluation_set": "validation"
