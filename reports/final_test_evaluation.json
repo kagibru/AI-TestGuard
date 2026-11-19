@@ -1,0 +1,28 @@
+{
+    "model": "LogisticRegression",
+    "evaluation_set": "test",
+    "random_state": 42,
+    "threshold": 0.9,
+    "model_path": "models\\fraud_logistic_regression.joblib",
+    "model_retrained": false,
+    "split": {
+        "train": 170884,
+        "validation": 56961,
+        "test": 56962
+    },
+    "test_class_distribution": {
+        "normal": 56863,
+        "fraud": 99
+    },
+    "metrics_test": {
+        "precision": 0.2573099415204678,
+        "recall": 0.8888888888888888,
+        "f1": 0.39909297052154197,
+        "roc_auc": 0.9662040804435683,
+        "pr_auc": 0.7575263277759672,
+        "tn": 56609,
+        "fp": 254,
+        "fn": 11,
+        "tp": 88
+    }
+}
