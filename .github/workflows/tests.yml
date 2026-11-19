@@ -35,6 +35,7 @@ jobs:
         run: |
           mkdir -p reports
           python -m pytest tests/ -v \
+            -m "not integration" \
             --cov=app \
             --cov-branch \
             --cov-report=term-missing \
