@@ -1,0 +1,11 @@
+{
+    "batch_size": 100,
+    "iterations": 100,
+    "warmup": 10,
+    "mean_batch_latency_ms": 0.6218030006857589,
+    "p95_batch_latency_ms": 0.7679549977183342,
+    "throughput_transactions_per_second": 160822.6397906,
+    "model_size_mb": 0.0025949478149414062,
+    "memory_delta_mb": 0.00390625,
+    "evaluation_set": "validation"
+}
