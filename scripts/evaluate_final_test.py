@@ -23,7 +23,6 @@ from sklearn.metrics import (
 from app.preprocessing import preprocess_data
 from app.training import split_data
 
-
 DATA_PATH = Path("data/creditcard.csv")
 MODEL_PATH = Path("models/fraud_logistic_regression.joblib")
 REPORT_PATH = Path("reports/final_test_evaluation.json")
@@ -48,10 +47,9 @@ def main():
     df = pd.read_csv(DATA_PATH)
     X, y = preprocess_data(df)
 
-    X_train, X_val, X_test, y_train, y_val, y_test = (
+    X_train, X_val, X_test, _y_train, _y_val, y_test = (
         split_data(X, y, random_state=RANDOM_STATE)
     )
-
     # 3. Vérifier l'indépendance des partitions.
     assert set(X_train.index).isdisjoint(X_test.index)
     assert set(X_val.index).isdisjoint(X_test.index)
